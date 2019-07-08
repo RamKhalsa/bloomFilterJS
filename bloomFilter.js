@@ -1,15 +1,18 @@
-const murmur = require('murmurhash-js');
+const murmurhash2_32_gc = require('./hashes/murmur');
+const simpleHash = require('./hashes/simple');
+const fnv32a = require('./hashes/fnv');
 
 const BloomFilter = function(size, numHashes){
     this._storage = new Array(size).fill(0);
     this.size = size;
     this.numHashes = numHashes;
+    this._hashes = [murmurhash2_32_gc, simpleHash, fnv32a];
     this.numAdded = 0;
 }
 
-const hash = function(seed, string, max){
-    const num = murmur.murmur3(string.toString(), seed);
-    return num % max;
+const hash = function(string, max, hasher, seed){
+    const num = hasher(string, max, seed);
+    return num > max ? num % max : num;
 }
 
 BloomFilter.prototype = {
@@ -32,12 +35,12 @@ BloomFilter.prototype = {
     getHashes:function(string) {
         var indices = [];
         for (var i = 0; i < this.numHashes; i++){
-            indices.push(hash(i, string, this.size));
+            indices.push(hash(string, this.size, this._hashes[i], i));
         }
         return indices;
     },
     getFalsePositiveRate:function() {
         var eExp = ((-1) * this.numHashes * this.numAdded) / this.size;
-        return Math.pow((1 - Math.pow(Math. E , (eExp))), this.numHashes);
+        return `The False Positive rate is ${Math.pow((1 - Math.pow(Math. E , (eExp))), this.numHashes).toFixed(4)} percent`;
     }
 }

@@ -1,0 +1,23 @@
+{
+  "name": "bloomfilterjs",
+  "version": "1.0.0",
+  "description": "Implementation of a Bloom Filter using MurmurHash.js.",
+  "main": "bloomFilter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RamKhalsa/bloomFilterJS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RamKhalsa/bloomFilterJS/issues"
+  },
+  "homepage": "https://github.com/RamKhalsa/bloomFilterJS#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0"
+  }
+}
